@@ -34,6 +34,7 @@ const PlayerContext = ({ children }) => {
   const [flute_sound, set_flute_sound] = useState(null);
   const [owl_sound, set_owl_sound] = useState(null);
   const [isPlaying, setisPlaying] = useState(false)
+  const [apply_sound, set_apply_sound] = useState([])
   return (
     <Player.Provider
       value={{
@@ -71,7 +72,8 @@ const PlayerContext = ({ children }) => {
         piano_sound, set_piano_sound,
         flute_sound, set_flute_sound,
         owl_sound, set_owl_sound,
-        isPlaying, setisPlaying
+        isPlaying, setisPlaying,
+        apply_sound, set_apply_sound
 
 
 

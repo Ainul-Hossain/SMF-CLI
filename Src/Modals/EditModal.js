@@ -18,6 +18,7 @@ import { FLEX,GAP, HEIGHT, WIDTH, COLOR, FONTSIZE, FONTWEIGHT } from '../Theme/t
 import { Player } from '../Context/PlayerContext'
 import { Audio } from 'expo-av';
 import TrackPlayer, { State, usePlaybackState } from 'react-native-track-player';
+import { setMode } from 'react-native-sound';
 const EditModal = ({editModalVisible, setEditModalVisible}) => {
 console.log('From Edit Modal...')
 
@@ -66,9 +67,10 @@ const [selectedItem, setSelectedItem] = useState(null);
   // const [piano_sound, set_piano_sound] = useState(null);
   // const [flute_sound, set_flute_sound] = useState(null);
   // const [owl_sound, set_owl_sound] = useState(null);
-const {currentTrack,seconds,isPlaying, setisPlaying, userItem, setUserItem,currentSound, setcurrentSound, item, setItem, editMusicSound, setEditMusicSound, user_given_time, set_user_given_time, minutes} = useContext(Player)
+const {currentTrack,seconds,isPlaying, setisPlaying, userItem, setUserItem,currentSound, setcurrentSound, item, setItem, editMusicSound, setEditMusicSound, user_given_time, set_user_given_time, minutes,  apply_sound, set_apply_sound, mood, set_Mood} = useContext(Player)
 const [volume, setVolume] = useState(3);
 const [user_item, set_user_item] = useState(null);
+
 
 
 const TimeColor = [
@@ -469,11 +471,10 @@ const Play_Audio = async (item) => {
       });
  
       setEditMusicSound((prevSounds) => [...prevSounds, sound])
-     
+
+      console.log(apply_sound)
       
 
-     
-     
       if (item.title === "Rain") {
         set_rain_sound(sound);
         console.log("Added SuccessFull");
@@ -570,8 +571,6 @@ const handleVolumeChange = (value, itemId) => {
       playingSound.setVolumeAsync(value);
     }
 };
-
-
 
 const handle_edit_music = (item) => {
     setUserItem((prevSelectedItems) => {
@@ -695,7 +694,11 @@ const delete_sounds = (sound_item) => {
     );
   };
 
+const  handle_data = ()=>{
+  if(mood === true){
 
+  }
+}
 
 
   useEffect(()=>{
@@ -1071,11 +1074,22 @@ return (
       colors={TimeColor}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {EditMusic.length>0 ? (
+            <Pressable
+            style={styles.TimerView}>
+            <View style={styles.closeBtnContainer}>
+              <View style={styles.closeBtnChild2}>
+               
+              </View>
+            </View>
+            
+          </Pressable>
+        ) : (
         <Pressable
           style={styles.TimerView}
           onPress={() =>{
             setEditModalVisible(false)
-            handle_reset();
+            //handle_reset();
             setLoadedSounds([]);
             setUserItem([]);
           } }
@@ -1087,6 +1101,8 @@ return (
           </View>
           <Text style={styles.closeText}>Close</Text>
         </Pressable>
+        )}
+        
 
         <View
           style={[
@@ -1110,6 +1126,7 @@ return (
                   <TouchableOpacity
                     onPress={() => {
                       delete_sounds(item);
+                      handle_data()
                     }}
                     style={styles.sound_box}
                   >
@@ -1293,14 +1310,12 @@ return (
                 if(playBackState.state === State.Stopped){
                   await TrackPlayer.skip(item.id-1)
                   await TrackPlayer.play()
+                  
                   setCurrentTrack(true)
                 }
                 else{
-
+                  setMode(true)
                 }
-                
-               
-                
                  setEditModalVisible(false)
               }}
               disabled={EditMusic.length === 0}
@@ -1340,6 +1355,13 @@ const styles = StyleSheet.create({
     width: WIDTH.width_40,
     padding: 10,
     backgroundColor: COLOR.white_color6,
+    borderRadius: 20,
+  },
+  closeBtnChild2: {
+    height: HEIGHT.height_40,
+    width: WIDTH.width_40,
+    padding: 10,
+    
     borderRadius: 20,
   },
   closeBtnIcon: {

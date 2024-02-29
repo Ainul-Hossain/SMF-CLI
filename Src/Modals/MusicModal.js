@@ -25,6 +25,7 @@ import EditModal from './EditModal';
 import TrackPlayer, { Event, Capability, State, usePlaybackState, useProgress, useTrackPlayerEvents } from 'react-native-track-player';
 import { MusicDatas } from '../Data/Data';
 import TimerModal from './TimerModal';
+import { setMode } from 'react-native-sound';
 const MusicModal = ({MusicModalVisible, setMusicModalVisible}) => {
   console.log('From MusicModal.js...');
   const {item, setItem, miniPlayer,setminiPlayer,  user_given_time, set_user_given_time, currentTrack, setCurrentTrack, EditMusic,setEditMusic, setUserItem, 
@@ -51,7 +52,8 @@ const MusicModal = ({MusicModalVisible, setMusicModalVisible}) => {
   minutes, setMinutes,
   editMusicSound, 
   setEditMusicSound,
-  isPlaying, setisPlaying
+  isPlaying, setisPlaying,
+  mood, set_Mood
   } = useContext(Player);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [timerModal, setTimerModal] = useState(false)
@@ -80,17 +82,18 @@ const MusicModal = ({MusicModalVisible, setMusicModalVisible}) => {
        TrackPlayer.skip(item.id-1)
        TrackPlayer.play()
     }
-   
     else{
       console.log(`Here Playback State: ` + playBackState.state)
       console.log(`Nothing.....${minutes}::${seconds}`)
       if(seconds === 0 && minutes<=0){
+        set_user_given_time(0)
         TrackPlayer.stop()
         setCurrentTrack(false)
       }
     }
   }
  },[seconds])
+
 
 //Initializing Music Data Before Render
 useEffect(() => {
@@ -475,6 +478,7 @@ const events = [
                 setEditMusicSound([])
                 set_user_given_time(0)
                 setSeconds(0)
+                setMode(false)
               }}
               style={styles.MusicModalCrossIcon}>
               <Image
