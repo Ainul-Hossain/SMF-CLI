@@ -26,8 +26,10 @@ import TrackPlayer, { Event, Capability, State, usePlaybackState, useProgress, u
 import { MusicDatas } from '../Data/Data';
 import TimerModal from './TimerModal';
 import { setMode } from 'react-native-sound';
+import { useKeepAwake } from '@sayem314/react-native-keep-awake';
 const MusicModal = ({MusicModalVisible, setMusicModalVisible}) => {
   console.log('From MusicModal.js...');
+  useKeepAwake()
   const {item, setItem, miniPlayer,setminiPlayer,  user_given_time, set_user_given_time, currentTrack, setCurrentTrack, EditMusic,setEditMusic, setUserItem, 
   loadedSounds, setLoadedSounds, rain_sound, set_rain_sound,
   leaf_rain_sound, set_leaf_rain_sound,
